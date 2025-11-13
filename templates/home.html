@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+</head>
+<body>
+    <div class="header">
+        <h2>Kanban Board for Core Developers</h2>
+        <p id="datetime"></p>
+        <p>Welcome, {{ dev_name }}!</p>
+    </div>
+
+    <div class="container">
+        <div class="Development">
+            <div class="btns">
+                <button id="removebtn">-</button>
+                <button id="addbtn">+</button>
+            </div>
+            <div id="dev_title">
+                <h3>Development</h3>
+            </div>
+            <div class="dev_details_container">
+                {% if sprints_data %}
+                    {% for sprint_data in sprints_data %}
+                    <div class="dev_details">
+                        <form method="POST" action="{{ url_for('home_page', dev_name=dev_name, temp_name=temp_name) }}">
+                            <input type="hidden" name="mop_name" value="{{ temp_name }}" /> 
+                            <input type="hidden" name="sprint_index" value="{{ sprint_data.sprint_index - 1 }}" /> <!-- Subtract 1 for 0-based indexing -->
+
+                            <label for="sprint_done_{{ sprint_data.sprint_index }}">
+                                Is sprint {{ sprint_data.sprint_index }} completed:
+                            </label>
+                            <select name="sprint_done" id="sprint_done_{{ sprint_data.sprint_index }}">
+                                <option value="no" {% if not sprint_data.isSprint %}selected{% endif %}>No</option>
+                                <option value="yes" {% if sprint_data.isSprint %}selected{% endif %}>Yes</option>
+                            </select>
+
+                            <input type="date" 
+                                   id="date_{{ sprint_data.sprint_index }}" 
+                                   name="selected_date" 
+                                   value="{{ sprint_data.Date }}" />
+
+                            <label for="dev_delay_reason_{{ sprint_data.sprint_index }}">Reason for delay:</label>
+                            <textarea id="dev_delay_reason_{{ sprint_data.sprint_index }}" 
+                                      name="delay_reason" 
+                                      placeholder="Explain the reason...">{{ sprint_data.DelayReason }}</textarea>
+
+                            <button type="submit" 
+                                    class="save-btn"
+                                    {% if sprint_data.isSprint %}disabled style="background-color: grey"{% endif %}>
+                                {% if sprint_data.isSprint %}Complete{% else %}Save{% endif %}
+                            </button>
+                        </form>
+
+                        <table id="dev_table_{{ sprint_data.sprint_index }}">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if sprint_data.Incomplete_History %}
+                                    {% for incomplete_entry in sprint_data.Incomplete_History %}
+                                    <tr>
+                                        <td>{{ incomplete_entry.Date }}</td>
+                                        <td>{{ incomplete_entry.Reason }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="2">No incomplete history</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="dev_details">
+                        <p>No sprint data available. Please load data first.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="flow">
+            <div id="flow_title">
+                <h3>Completed</h3>
+            </div>
+            <div class="completed">
+                <div class="completed_details">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sprint</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if completed_sprints %}
+                                {% for completed_sprint in completed_sprints %}
+                                <tr>
+                                    <td>Sprint {{ completed_sprint.sprint_index }}</td>
+                                    <td>{{ completed_sprint.Completed.Date if completed_sprint.Completed.Date else 'No date' }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">No completed sprints yet.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>
