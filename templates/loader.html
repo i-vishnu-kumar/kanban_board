@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create the Kanban Webpage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/loader.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Let's create your development Kanban</h2>
+      <h4 class="warning">Select sprints as total number of commands in RMOP by 10.</h4>
+      <form id="sprintForm" method="POST" action="/loader">
+        <label for="template_throw">Name of RMOP template:</label>
+        <input name = "temp_name" type="text" id="template" placeholder="MOP name as in Jira" required>
+        <label for="sprints">Number of sprints:</label>
+        <select name="sprint_num" id="sprint_num">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <button type="submit" id="createButton">Create</button>
+      </form>
+    </div>
+    <a href="/developers" class="developers-link">Developers Portal >>></a>
+    <script src="{{ url_for('static', filename='js/loader.js') }}" defer></script>
+</body>
+</html>
