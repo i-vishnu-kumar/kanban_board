@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+    <title>Login Page</title>
+</head>
+<body>
+    <form id = "loginForm" method="POST" action="/">
+        <h3>Login</h3>
+        <h5>Username</h5>
+        <input name = "username" id = "username" placeholder="Enter your username" type="text">
+        <h5>Password</h5>
+        <input name = "password" id = "password" placeholder = "Enter your password" type="text">
+        <h5 is_login_success = "{{ login_status }}"
+            class="wring_creds_pop_up">Your username or password is wrong, try again...
+        </h5>
+        <button type="submit">Login</button>
+    </form> 
+    <a href="signup"></a>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
