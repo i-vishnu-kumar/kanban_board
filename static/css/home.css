@@ -1,0 +1,284 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+}
+
+/* Title Styling */
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 30px;
+    color: #2c3e50;
+    margin-right: 200px;
+    margin-left: 350px;
+    margin-bottom: 10px;
+}
+
+#datetime {
+    color: red;
+    padding: 20px 20px;
+    margin: 20px 20px;
+}
+
+/* Warning Styling */
+h4.warning {
+    color: red;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+/* Container for Flow and Development sections */
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    margin-top: -10px;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    /* border: 2px solid brown; */
+}
+
+/* Development section - SINGLE DEFINITION */
+.Development {
+    flex: 1 1 75%; /* Development section takes 75% of width */
+    margin-right: 20px; /* Add some space between Development and Flow */
+}
+
+/* Add/Remove Button Styling */
+.btns {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+#removebtn, #addbtn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#addbtn {
+    background-color: #27ae60;
+}
+
+#removebtn:hover {
+    background-color: #c0392b;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#addbtn:hover {
+    background-color: #219a52;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#removebtn:active, #addbtn:active {
+    transform: scale(0.95);
+}
+
+#dev_title {
+    background-color: rgb(81, 81, 149);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Container for dev_details cards */
+.dev_details_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Flow section */
+.flow {
+    flex: 1 1 20%; /* Flow section takes 20% of width */
+    min-width: 200px; /* Ensures it doesn't get too small */
+    margin-top: 50px;
+}
+
+#flow_title {
+    background-color: rgb(240, 119, 119);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Dev Details Styling */
+.dev_details {
+    flex: 1 1 calc(50% - 10px); /* Two cards per row with gap */
+    min-width: 250px;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Labels and Inputs Styling */
+.dev_details label {
+    font-weight: 600;
+    color: #333;
+    margin-top: 10px;
+    display: block;
+}
+
+.dev_details select,
+.dev_details input[type="date"],
+.dev_details textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.dev_details textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Button Styling */
+.dev_details button {
+    background-color: rgb(81, 81, 149);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.dev_details button:hover {
+    background-color: rgb(59, 59, 221);
+    transform: scale(1.02);
+}
+
+.dev_details button:disabled {
+    background-color: grey !important;
+    cursor: not-allowed;
+}
+
+.dev_details button:disabled:hover {
+    transform: none;
+}
+
+/* Table Styling */
+.dev_details table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.dev_details th,
+.dev_details td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.dev_details th {
+    background-color: rgb(81, 81, 149);
+    color: white;
+    font-weight: 600;
+}
+
+.dev_details td {
+    background-color: #f9f9f9;
+}
+
+.dev_details tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+/* Completed Section */
+.completed {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Completed Table Styling */
+.completed_details table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-top: 10px;
+}
+
+.completed_details th,
+.completed_details td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.completed_details th {
+    background-color: rgb(240, 119, 119);
+    color: white;
+    font-weight: 600;
+}
+
+.completed_details td {
+    background-color: #fafafa;
+}
+
+.completed_details tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .flow,
+    .Development {
+        flex: 1 1 100%; /* Ensure they take full width on smaller screens */
+        margin-right: 0;
+    }
+
+    .dev_details {
+        flex: 1 1 100%;
+        margin-bottom: 15px;
+    }
+}
