@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Kanban Collections{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/collection_page.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="rows">
+
+        <div class="developers">
+            <h2 class="column-title">Developers</h2>
+            <ul>
+                <li class="tiles">
+                    <a href="#" class="developer-filter-link" data-developer="ALL">ALL</a>
+                </li>
+                {% for dev in devs %} {# devs now comes sorted from app.py #}
+                    <li class="tiles">
+                        <span><a href="#" class="developer-filter-link" data-developer="{{ dev }}"> {{ dev }}</a><a href="{{ url_for('dev_page', dev_name=dev) }}">  ➟</a></span>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+        </div>
+
+        <div class="rmops">
+            <h2 class="column-title">RMOPS</h2>
+            <ul id="rmops-list">
+                {# Initial RMOPs will be loaded by Flask, then updated by JS #}
+                {% for rmop_name, dev_name in rmops.items() %}
+                    <li class="tiles"> <a href="{{ url_for('home', dev_name=dev_name, temp_name=rmop_name) }}">{{ rmop_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="domains">
+            <h2 class="column-title">Domains</h2>
+            <ul>
+                {% for domain in domains %}
+                    <li class="tiles">
+                        <a href="#" class="domain-filter-link" data-domain="{{ domain }}"> {{ domain }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+    {% if current_user.is_authenticated %}
+        <p><a href="{{ url_for('loader', dev_name=current_user.name) }}">Add New MOP</a></p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts_extra %}
+    <script src="{{ url_for('static', filename='js/collection_page.js') }}"></script>
+{% endblock %}
