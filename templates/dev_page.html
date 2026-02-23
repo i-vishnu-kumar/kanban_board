@@ -1,28 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Details</title>
+{% extends "base.html" %}
+
+{% block title %}Developer Details{% endblock %}
+
+{% block head_extra %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dev_page.css') }}">
-</head>
-<body>
-    <h1>Developer: {{ dev_name }}</h1>
+{% endblock %}
+
+{% block content %}
+    <header class="main-header">
+        <h1>Developer: {{ dev_name }}</h1>
+    </header>
+    <div class="report-actions">
+        <a href="{{ url_for('generate_report', dev_name=dev_name) }}" class="generate-report-btn">
+            {% if has_today_report %}Edit Today's Report{% else %}Generate Weekly Report{% endif %}
+        </a>
+    </div>
+    
     <p>Ongoing projects are as follows:</p>
+
     <ul>
         {% for sprint in sprint_data %}
-            <a href="{{ url_for('home', dev_name=dev_name, temp_name=sprint.mop_name) }}">
-                <li data-mop-name="{{ sprint['mop_name'] }}" 
-                    data-start-date="{{ sprint['date'] }}" 
-                    data-max-completed="{{ sprint['max_completed_sprints'] }}" 
+            <a class="dev_mops" href="{{ url_for('home', dev_name=dev_name, temp_name=sprint.mop_name) }}">
+                <li data-mop-name="{{ sprint['mop_name'] }}"
+                    data-start-date="{{ sprint['date'] }}"
+                    data-max-completed="{{ sprint['max_completed_sprints'] }}"
                     data-total="{{ sprint['total_sprint'] }}">
-                    {{ sprint["mop_name"] }} started on {{ sprint["date"] }}, current progress is 
+                    {{ sprint["mop_name"] }} started on {{ sprint["date"] }} | completed:
                     <span class="completion">{{ sprint["max_completed_sprints"] }} / {{ sprint["total_sprint"] }}</span>
                 </li>
             </a>
         {% endfor %}
     </ul>
-    <a href="/developers">Back to Developers List ◄ </a>
+
+    <a href="{{ url_for('devs_page') }}">Back to Developers List ◄ </a>
+{% endblock %}
+
+{% block scripts_extra %}
     <script src="{{ url_for('static', filename='js/dev_page.js') }}"></script>
-</body>
-</html>
+{% endblock %}
