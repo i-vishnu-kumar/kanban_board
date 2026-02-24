@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Developers</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/developers.css') }}"
-    />
-  </head>
-  <body>
-    <h3 class="heading">Developers</h3>
+{% extends "base.html" %}
+
+{% block title %}Developers{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/developers.css') }}" />
+{% endblock %}
+
+{% block content %}
+    <header class="main-header">
+        <h3 class="heading">Developers</h3>
+    </header>
+
     <ul class="devs" id="devs">
-      {% for dev in developers %}
-      <li id="dev" developer_name="{{ dev }}">
-        <a href="{{ url_for('dev_page', dev_name=dev) }}">{{ dev }}</a>
-      </li>
-      {% endfor %}
+        {% for dev in developers %}
+          <a href="{{ url_for('dev_page', dev_name=dev) }}">
+            <li id="dev" developer_name="{{ dev }}">
+                {{ dev }}</a>
+              </li>
+          </a>
+        {% endfor %}
     </ul>
+{% endblock %}
+
+{% block scripts_extra %}
     <script src="{{ url_for('static', filename='js/developers.js') }}"></script>
-  </body>
-</html>
+{% endblock %}
