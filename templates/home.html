@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kanban Board</title>
+{% extends "base.html" %}
+
+{% block title %}Kanban Board - {{ temp_name }}{% endblock %}
+
+{% block head_extra %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="header">
-        <h2>Kanban Board for Core Developers</h2>
+        <h2> RMOP Name: {{ temp_name }}</h2>
         <p id="datetime"></p>
-        <p>Welcome, {{ dev_name }}!</p>
     </div>
 
     <div class="container">
         <div class="Development">
             <div class="btns">
-                <button id="removebtn">-</button>
-                <button id="addbtn">+</button>
+                {# Show buttons only if the logged-in user is the developer for this MOP #}
+                {% if current_user.is_authenticated and current_user.name == dev_name %}
+                    <button id="removebtn" data-dev-name="{{ dev_name }}" data-temp-name="{{ temp_name }}">-</button>
+                    <button id="addbtn" data-dev-name="{{ dev_name }}" data-temp-name="{{ temp_name }}">+</button>
+                {% endif %}
             </div>
             <div id="dev_title">
                 <h3>Development</h3>
@@ -25,59 +27,62 @@
             <div class="dev_details_container">
                 {% if sprints_data %}
                     {% for sprint_data in sprints_data %}
-                    <div class="dev_details">
-                        <form method="POST" action="{{ url_for('home_page', dev_name=dev_name, temp_name=temp_name) }}">
-                            <input type="hidden" name="mop_name" value="{{ temp_name }}" /> 
-                            <input type="hidden" name="sprint_index" value="{{ sprint_data.sprint_index - 1 }}" /> <!-- Subtract 1 for 0-based indexing -->
+                        <div class="dev_details">
+                            <form method="POST" action="{{ url_for('home_page', dev_name=dev_name, temp_name=temp_name) }}">
+                                <input type="hidden" name="mop_name" value="{{ temp_name }}" />
+                                <input type="hidden" name="sprint_index" value="{{ sprint_data.sprint_index - 1 }}" />
 
-                            <label for="sprint_done_{{ sprint_data.sprint_index }}">
-                                Is sprint {{ sprint_data.sprint_index }} completed:
-                            </label>
-                            <select name="sprint_done" id="sprint_done_{{ sprint_data.sprint_index }}">
-                                <option value="no" {% if not sprint_data.isSprint %}selected{% endif %}>No</option>
-                                <option value="yes" {% if sprint_data.isSprint %}selected{% endif %}>Yes</option>
-                            </select>
+                                <label for="sprint_done_{{ sprint_data.sprint_index }}">
+                                    Is sprint {{ sprint_data.sprint_index }} completed:
+                                </label>
+                                <select name="sprint_done" id="sprint_done_{{ sprint_data.sprint_index }}"
+                                        {% if current_user.is_authenticated and current_user.name != dev_name %}disabled{% endif %}>
+                                    <option value="no" {% if not sprint_data.isSprint %}selected{% endif %}>No</option>
+                                    <option value="yes" {% if sprint_data.isSprint %}selected{% endif %}>Yes</option>
+                                </select>
 
-                            <input type="date" 
-                                   id="date_{{ sprint_data.sprint_index }}" 
-                                   name="selected_date" 
-                                   value="{{ sprint_data.Date }}" />
+                                <input type="date"
+                                       id="date_{{ sprint_data.sprint_index }}"
+                                       name="selected_date"
+                                       value="{{ sprint_data.Date }}"
+                                       {% if current_user.is_authenticated and current_user.name != dev_name %}disabled{% endif %} />
 
-                            <label for="dev_delay_reason_{{ sprint_data.sprint_index }}">Reason for delay:</label>
-                            <textarea id="dev_delay_reason_{{ sprint_data.sprint_index }}" 
-                                      name="delay_reason" 
-                                      placeholder="Explain the reason...">{{ sprint_data.DelayReason }}</textarea>
+                                <label for="dev_delay_reason_{{ sprint_data.sprint_index }}">Reason for delay:</label>
+                                <textarea id="dev_delay_reason_{{ sprint_data.sprint_index }}"
+                                          name="delay_reason"
+                                          placeholder="Explain the reason..."
+                                          {% if current_user.is_authenticated and current_user.name != dev_name %}disabled{% endif %}>{{ sprint_data.DelayReason }}</textarea>
 
-                            <button type="submit" 
-                                    class="save-btn"
-                                    {% if sprint_data.isSprint %}disabled style="background-color: grey"{% endif %}>
-                                {% if sprint_data.isSprint %}Complete{% else %}Save{% endif %}
-                            </button>
-                        </form>
+                                <button type="submit"
+                                        class="save-btn"
+                                        {% if sprint_data.isSprint or (current_user.is_authenticated and current_user.name != dev_name) %}disabled style="background-color: grey"{% endif %}>
+                                    {% if sprint_data.isSprint %}Complete{% else %}Save{% endif %}
+                                </button>
+                            </form>
 
-                        <table id="dev_table_{{ sprint_data.sprint_index }}">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if sprint_data.Incomplete_History %}
-                                    {% for incomplete_entry in sprint_data.Incomplete_History %}
+                            <table id="dev_table_{{ sprint_data.sprint_index }}">
+                                <thead>
                                     <tr>
-                                        <td>{{ incomplete_entry.Date }}</td>
-                                        <td>{{ incomplete_entry.Reason }}</td>
+                                        <th>Date</th>
+                                        <th>Reason</th>
                                     </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="2">No incomplete history</td>
-                                    </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {% if sprint_data.Incomplete_History %}
+                                        {% for incomplete_entry in sprint_data.Incomplete_History %}
+                                            <tr>
+                                                <td>{{ incomplete_entry.Date }}</td>
+                                                <td>{{ incomplete_entry.Reason }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="2">No incomplete history</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
                     {% endfor %}
                 {% else %}
                     <div class="dev_details">
@@ -103,10 +108,10 @@
                         <tbody>
                             {% if completed_sprints %}
                                 {% for completed_sprint in completed_sprints %}
-                                <tr>
-                                    <td>Sprint {{ completed_sprint.sprint_index }}</td>
-                                    <td>{{ completed_sprint.Completed.Date if completed_sprint.Completed.Date else 'No date' }}</td>
-                                </tr>
+                                    <tr>
+                                        <td>Sprint {{ completed_sprint.sprint_index }}</td>
+                                        <td>{{ completed_sprint.Completed.Date if completed_sprint.Completed.Date else 'No date' }}</td>
+                                    </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
@@ -119,7 +124,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block scripts_extra %}
     <script src="{{ url_for('static', filename='js/home.js') }}"></script>
-</body>
-</html>
+{% endblock %}
