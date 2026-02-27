@@ -1,25 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
-    <title>Login Page</title>
-</head>
-<body>
-    <form id = "loginForm" method="POST" action="/">
-        <h3>Login</h3>
-        <h5>Username</h5>
-        <input name = "username" id = "username" placeholder="Enter your username" type="text">
-        <h5>Password</h5>
-        <input name = "password" id = "password" placeholder = "Enter your password" type="text">
-        <h5 is_login_success = "{{ login_status }}"
-            class="wring_creds_pop_up">Your username or password is wrong, try again...
-        </h5>
-        <button type="submit">Login</button>
-    </form> 
-    <a href="signup"></a>
+{% extends "base.html" %}
 
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</body>
-</html>
+{% block title %}Login Page{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+{% endblock %}
+
+{% block content %}
+    {# Flash messages are already handled by base.html, no need to repeat them here #}
+    {# The login form will be the main content inside the .container #}
+    <div class="login-container"> {# Added a specific container for the login box #}
+        <form id="loginForm" method="POST" action="{{ url_for('login_page') }}">
+            <h3>Login</h3>
+
+            <h5>Username</h5>
+            <input name="username" id="username" placeholder="Enter your username" type="text" required>
+
+            <h5>Password</h5>
+            <input name="password" id="password" placeholder="Enter your password" type="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    {# Optional: Add a signup link if you have a signup route #}
+    {# <a href="{{ url_for('signup_page') }}">Sign Up</a> #}
+{% endblock %}
+
+{% block scripts_extra %}
+    {# <script src="{{ url_for('static', filename='js/login.js') }}"></script> #}
+{% endblock %}
